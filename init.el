@@ -1,4 +1,19 @@
+;;(add-to-list 'load-path (expand-file-name "org-beta\\lisp" user-emacs-directory))
+;;(add-to-list 'load-path (expand-file-name "org-beta\\org-contrib\\lisp" user-emacs-directory))
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+;;(add-to-list 'load-path (expand-file-name "elpa" user-emacs-directory))
+;;(add-to-list 'load-path (expand-file-name "ess-17.11" user-emacs-directory))
+;;(load "ess-autoloads")
+;;(require 'ess-r-mode)
+
+;;(setq load-path '())
+;;(add-to-ordered-list 'load-path (expand-file-name "org-beta\\lisp" user-emacs-directory) 1)
+;;(add-to-ordered-list 'load-path (expand-file-name "org-beta\\org-contrib\\lisp" user-emacs-directory) 2)
+;;(add-to-ordered-list 'load-path (expand-file-name "lisp" user-emacs-directory) 3)
+
+;; (add-to-list 'load-path (expand-file-name "elpa" user-emacs-directory))
+;;(add-to-list 'package-archives '("org-fstree" . "http://www.burtzlaff.de/org-fstree/org-fstree.el"))
+
 
 (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
 (defconst *is-a-mac* (eq system-type 'darwin))
@@ -7,6 +22,19 @@
 ;; Bootstrap config
 ;;----------------------------------------------------------------------------
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+;;add ========================
+;; run latex compiler with option -shell-escape
+(setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))
+;; use Sumatra PDF to preview pdf
+(setq TeX-source-correlate-mode t)
+(setq TeX-source-correlate-method 'synctex)
+(setq TeX-view-program-list
+   '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+                      (mode-io-correlate " -forward-search %b %n ") " %o"))))
+;;==============================================================================
+
+
 ;; (require 'init-compat)
 (require 'init-utils)
 
@@ -30,6 +58,8 @@
 ;; Load configs for specific features and modes
 ;;----------------------------------------------------------------------------
 
+(require 'init-dired)
+
 ;; (require-package 'wgrep)
 ;; (require-package 'project-local-variables)
 ;; (require-package 'diminish)
@@ -41,7 +71,7 @@
 ;; (require 'init-osx-keys)
 ;; (require 'init-gui-frames)
 ;; (require 'init-proxies)
-(require 'init-dired)
+;; (require 'init-dired)
 ;; (require 'init-isearch)
 ;; (require 'init-uniquify)
 ;; (require 'init-ibuffer)
@@ -110,6 +140,8 @@
 ;;   (require-package 'osx-location))
 ;; (require-package 'regex-tool)
 
+;;(require 'init-ess)
+
 (require 'init-themes)
 ;; ;;----------------------------------------------------------------------------
 ;; ;; Allow access from emacsclient
@@ -117,7 +149,6 @@
 ;; (require 'server)
 ;; (unless (server-running-p)
 ;;   (server-start))
-
 
 ;;----------------------------------------------------------------------------
 ;; Variables configured via the interactive 'customize' interface
@@ -143,6 +174,16 @@
 ;;            (lambda ()
 ;;              (message "init completed in %.2fms"
 ;;                       (sanityinc/time-subtract-millis after-init-time before-init-time))))
+
+;; Turn off sound alarms completely
+(setq ring-bell-function 'ignore)
+
+;; disable welcome page
+(setq inhibit-startup-message t)
+
+(custom-set-variables
+ '(initial-frame-alist (quote ((fullscreen . maximized))))
+ )
 
 
 (provide 'init)
